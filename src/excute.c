@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   excute.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helfatih <helfatih@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mbouizak <mbouizak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:00:25 by helfatih          #+#    #+#             */
-/*   Updated: 2025/08/05 14:40:12 by helfatih         ###   ########.fr       */
+/*   Updated: 2025/08/07 14:52:04 by mbouizak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ void	built_in_part1(t_command *cmd, char ***env)
 	else if (ft_strcmp(cmd->args[0], "cd") == 0)
 	{
 		if (cmd->args[1])
-			cd(cmd->args[1], *env);
+			cd(cmd->args[1], env);
 		else
-			cd(NULL, *env);
+			cd(NULL, env);
 	}
 	else if (ft_strcmp(cmd->args[0], "env") == 0)
 		print_env(*env);

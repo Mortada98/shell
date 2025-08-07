@@ -1,0 +1,12 @@
+pwd
+cd
+pwd
+mkdir test_folder
+cd test_folder
+pwd
+rm -rf ../test_folder
+unset PWD
+pwd
+cd ..
+pwd
+exit

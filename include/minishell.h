@@ -6,7 +6,7 @@
 /*   By: mbouizak <mbouizak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 16:22:52 by helfatih          #+#    #+#             */
-/*   Updated: 2025/08/07 11:19:44 by mbouizak         ###   ########.fr       */
+/*   Updated: 2025/08/07 14:52:04 by mbouizak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,9 +319,9 @@ char					*remove_quotes(char *str);
 char					*get_env(char *name, char **env);
 char					**copy_env(char **env);
 char					*get_env(char *name, char **env);
-void					cd(char *cmd, char **env);
-void					update_oldpwd(char **env);
-void					update_pwd(char **env);
+void					cd(char *cmd, char ***env);
+void					update_oldpwd(char ***env);
+void					update_pwd(char ***env);
 int						add_env_variable(char *new_var, char ***env);
 int						my_export(char *arg, char ***env);
 int						my_unset(char *name, char ***env);
