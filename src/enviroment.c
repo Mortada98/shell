@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   enviroment.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: helfatih <helfatih@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/04 09:34:08 by helfatih          #+#    #+#             */
+/*   Updated: 2025/08/04 13:41:28 by helfatih         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 int	add_env_variable(char *new_var, char ***env)
@@ -21,17 +33,17 @@ int	add_env_variable(char *new_var, char ***env)
 	}
 	new_env[i++] = new_var;
 	new_env[i] = NULL;
-	free(*env); // free the old pointer list (not the strings!)
+	free(*env);
 	*env = new_env;
 	return (1);
 }
 
-
 char	**copy_env(char **env)
 {
-	int		i = 0;
+	int		i;
 	char	**copy;
 
+	i = 0;
 	while (env[i])
 		i++;
 	copy = malloc(sizeof(char *) * (i + 1));

@@ -1,76 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   excute.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: helfatih <helfatih@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/04 14:00:25 by helfatih          #+#    #+#             */
+/*   Updated: 2025/08/05 14:40:12 by helfatih         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
-void	compare_newline(char **str, bool *j, int *i)
+void	built_in_part2(t_command *cmd, char ***env)
 {
-	int	k;
+	int	i;
 
-	k = 0;
-	while (str[*i] && ft_strncmp(str[*i], "-n", 2) == 0)
+	if (ft_strcmp(cmd->args[0], "export") == 0)
 	{
-		k = 1;
-		while (str[*i][k])
+		if (cmd->args[1])
 		{
-			if (str[*i][k] != 'n')
-			{
-				*j = false;
-				return ;
-			}
-			k++;
+			i = 0;
+			while (cmd->args[++i])
+				my_export(cmd->args[i], env);
 		}
-		*j = true;
-		(*i)++;
+		else
+			print_export_env(*env);
 	}
-
-}
-
-void	my_echo(t_command *cmd)
-{
-	int		i;
-	bool	j;
-
-	j = false;
-	i = 1;
-	if (!cmd->args[i])
+	else if (ft_strcmp(cmd->args[0], "unset") == 0)
 	{
-		printf("\n");
-		return ;
-	}
-	compare_newline(cmd->args, &j, &i);
-	while (cmd->args[i])
-	{
-		ft_putstr_fd(cmd->args[i], 1);
-		if (cmd->args[i + 1])
-			ft_putstr_fd(" ", 1);
-		i++;
-	}
-	if (j == false)
-		printf("\n");
-	fflush(stdout);
-}
-
-bool	built_in(char *cmd)
-{
-	if (ft_strcmp(cmd, "exit") == 0)
-		return (true);
-	if (ft_strcmp(cmd, "echo") == 0)
-		return (true);
-	if (ft_strcmp(cmd, "cd") == 0)
-		return (true);
-	if (ft_strcmp(cmd, "pwd") == 0)
-		return (true);
-	if (ft_strcmp(cmd, "export") == 0)
-		return (true);
-	if (ft_strcmp(cmd, "unset") == 0)
-		return (true);
-	if (ft_strcmp(cmd, "env") == 0)
-		return (true);
-	else
-	{
-		return (false);
+		if (cmd->args[1])
+		{
+			i = 0;
+			while (cmd->args[++i])
+				my_unset(cmd->args[i], env);
+		}
 	}
 }
 
-void	execute_builtin_command(t_command *cmd, char ***env)
+void	built_in_part1(t_command *cmd, char ***env)
 {
 	if (ft_strcmp(cmd->args[0], "echo") == 0)
 		my_echo(cmd);
@@ -85,102 +53,69 @@ void	execute_builtin_command(t_command *cmd, char ***env)
 		print_env(*env);
 	else if (ft_strcmp(cmd->args[0], "pwd") == 0)
 		my_pwd();
-	else if (ft_strcmp(cmd->args[0], "export") == 0)
-	{
-		if (cmd->args[1])
-		{
-			int i = 1;
-			while (cmd->args[i])
-			{
-				my_export(cmd->args[i], env);
-				i++;
-			}
-		}
-		else
-		{
-			// No arguments, print all environment variables in export format
-			print_export_env(*env);
-		}
-	}
-	else if (ft_strcmp(cmd->args[0], "unset") == 0)
-	{
-		if (cmd->args[1])
-		{
-			int i = 1;
-			while (cmd->args[i])
-			{
-				my_unset(cmd->args[i], env);
-				i++;
-			}
-		}
-	}
 }
 
-void	free_2D_array(char **str)
+void	execute_builtin_command(t_command *cmd, char ***env)
 {
-	(void)str;
+	if (!cmd || !cmd->args || !cmd->args[0])
+		return ;
+	built_in_part1(cmd, env);
+	built_in_part2(cmd, env);
 }
 
-char	*get_command(char *cmd, char **env)
+void	iterate_on_env(char **env, char **path_env, char *cmd)
 {
-	char	*path_env;
-	char	**split_env;
-	char	*complete_path;
-	char	*first_join;
-	int		i;
-	DIR		*folder;
+	int	i;
+	int j;
 
+	if (!env || !*env)
+		return ;
+	*path_env = NULL;
 	i = 0;
-	if (ft_strchr(cmd, '/'))
-	{
-		// Check if it's a directory first
-		folder = opendir(cmd);
-		if (folder != NULL)
-		{
-			write(2, "minishell: ", 11);
-			write(2, cmd, ft_strlen(cmd));
-			write(2, ": Is a directory\n", 17);
-			set_status(126);
-			closedir(folder);
-			return (NULL);
-		}
-		closedir(folder);
-		
-		if (access(cmd, X_OK) == 0)
-		{
-			return (gc_strdup(cmd));
-		}
-		if (access(cmd, F_OK) == 0)
-		{
-			return (gc_strdup(cmd));
-		}
-		return (NULL);
-	}
+	j = 0;
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 		{
-			path_env = env[i] + 5;
+			*path_env = env[i] + 5;
+			j++;
 			break ;
 		}
 		i++;
 	}
-	split_env = ft_split(path_env, ':');
-	first_join = gc_strjoin("/", cmd);
-	i = 0;
-	while (split_env[i])
+	if (j == 0)
 	{
-		complete_path = gc_strjoin(split_env[i], first_join);
-		if (access(complete_path, X_OK) == 0)
-		{
-			return (complete_path);
-		}
-		if (access	(complete_path, F_OK) == 0)
-		{
-			//printf("minishell: %s: Permission denied\n", complete_path);
-			return (complete_path);
-		}
+		write(2, "minishell: ", 12);
+		write(2, cmd, ft_strlen(cmd));
+		write(2, ": No such file pr directory\n", 29);
+	}
+}
+
+char	*get_command(char *cmd, char **env)
+{
+	t_cmd_var	var;
+	int			i;
+
+	i = 0;
+	if (ft_strchr(cmd, '/'))
+		return (check_file(cmd));
+	iterate_on_env(env, &var.path_env, cmd);
+	var.split_env = ft_split(var.path_env, ':');
+	var.first_join = gc_strjoin("/", cmd);
+	i = 0;
+	while (var.split_env[i])
+	{
+		var.complete_path = gc_strjoin(var.split_env[i], var.first_join);
+		stat(var.complete_path, &var.sb);
+		if (!access(var.complete_path, X_OK) && !S_ISDIR(var.sb.st_mode))
+			return (var.complete_path);
+		if (!access(var.complete_path, F_OK) && !S_ISDIR(var.sb.st_mode))
+			return (var.complete_path);
 		i++;
 	}
+	write(2, "minishell: ", 11);
+	write(2, cmd, ft_strlen(cmd));
+	write(2, ": command not found\n", 20);
+	set_status(127);
 	return (NULL);
 }

@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_global_value.c                                 :+:      :+:    :+:   */
+/*   g_redir_err.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: helfatih <helfatih@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/28 16:58:13 by helfatih          #+#    #+#             */
-/*   Updated: 2025/08/05 16:35:00 by helfatih         ###   ########.fr       */
+/*   Created: 2025/08/04 09:26:10 by helfatih          #+#    #+#             */
+/*   Updated: 2025/08/04 09:26:11 by helfatih         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	*init_status(void)
+int	*set_redir_error(void)
 {
-	static int	var = 0;
+	static int	g_redir_error = 0;
 
-	return (&var);
+	return (&g_redir_error);
 }
 
-void	set_status(int val)
+void	reset_redir_error(int value)
 {
-	int	*status;
+	int	*g_redir_error;
 
-	status = init_status();
-	*status = val;
+	g_redir_error = set_redir_error();
+	*g_redir_error = value;
 }
 
-int	get_status(void)
+int	get_redir_error(void)
 {
-	return (*init_status());
+	return (*set_redir_error());
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manual_realloc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helfatih <helfatih@student.42.fr>          +#+  +:+       +#+        */
+/*   By: helfatih <helfatih@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:22:08 by helfatih          #+#    #+#             */
-/*   Updated: 2025/07/28 16:31:16 by helfatih         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:44:46 by helfatih         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	red_in_realloc(t_command *cmd, t_data **data, t_token **current)
 	}
 	if (cmd->file_input)
 	{
-		for (j = 0; j < (*data)->count_red_in; j++)
+		j = -1;
+		while (++j < (*data)->count_red_in)
 			new_file_input[j] = cmd->file_input[j];
 	}
 	cmd->file_input = new_file_input;
@@ -40,16 +41,19 @@ int	red_in_realloc(t_command *cmd, t_data **data, t_token **current)
 
 int	heredoc_realloc(int *i, t_command *cmd, t_token **current)
 {
-    char **new_herdoc;
-    int j;
-    
+	char	**new_herdoc;
+	int		j;
+
 	new_herdoc = gc_malloc(sizeof(char *) * (*i + 2));
 	if (!new_herdoc)
 		return (0);
 	if (cmd->herdoc)
 	{
-		for (j = 0; j < *i; j++)
+		j = -1;
+		while (++j < *i)
+		{
 			new_herdoc[j] = cmd->herdoc[j];
+		}
 	}
 	cmd->herdoc = new_herdoc;
 	cmd->herdoc[(*i)] = gc_strdup((*current)->next->av);
@@ -57,5 +61,5 @@ int	heredoc_realloc(int *i, t_command *cmd, t_token **current)
 		return (0);
 	cmd->herdoc[*i + 1] = NULL;
 	(*i)++;
-    return(1);
+	return (1);
 }

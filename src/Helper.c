@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbouizak <mbouizak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: helfatih <helfatih@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:26:54 by helfatih          #+#    #+#             */
-/*   Updated: 2025/07/30 10:45:02 by mbouizak         ###   ########.fr       */
+/*   Updated: 2025/08/04 09:25:57 by helfatih         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,14 @@ int	count_args(char **av)
 	return (i);
 }
 
-void	free_array(char **arr)
-{
-	(void)arr;
-}
-
-void	free_cmd(t_command *cmd)
-{
-	(void)cmd;
-}
-
 void	append_arg(t_command *cmd, char *str, t_data **data)
 {
 	char	**new_array;
+	int		i;
+	int		j;
 
-	int i, j;
+	if (!cmd || !str)
+		return ;
 	(*data)->exit = 0;
 	i = 0;
 	if (cmd->args)

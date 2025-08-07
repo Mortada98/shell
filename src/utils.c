@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: helfatih <helfatih@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/05 16:39:08 by helfatih          #+#    #+#             */
+/*   Updated: 2025/08/05 16:39:18 by helfatih         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
-#include <stdio.h>
 
 void	handle_dollar(t_token **token, char *line, t_data **data, char **env)
 {
@@ -19,7 +30,8 @@ void	handle_dollar(t_token **token, char *line, t_data **data, char **env)
 	(*data)->start = (*data)->end;
 }
 
-void	handle_special_quot(t_token **token, char *line, t_data **data, char **env)
+void	handle_special_quot(t_token **token, char *line, t_data **data,
+		char **env)
 {
 	char	q;
 
@@ -40,7 +52,7 @@ void	handle_special_quot(t_token **token, char *line, t_data **data, char **env)
 	(*data)->start = (*data)->end;
 	q = line[(*data)->end];
 	(*data)->end++;
-	while (line[(*data)->end] != q)
+	while (line[(*data)->end] != q && line[(*data)->end] != '\0')
 		(*data)->end++;
 	if (line[(*data)->end] == q)
 		(*data)->end++;
@@ -48,7 +60,8 @@ void	handle_special_quot(t_token **token, char *line, t_data **data, char **env)
 	(*data)->start = (*data)->end;
 }
 
-void	handle_white_spaces(t_token **token, char *line, t_data **data, char **env)
+void	handle_white_spaces(t_token **token, char *line, t_data **data,
+		char **env)
 {
 	handle_word_token(token, line, data, env);
 	while (line[(*data)->end] == ' ' || line[(*data)->end] == '\t')
@@ -67,7 +80,8 @@ bool	check_somthing(char *word)
 	return (true);
 }
 
-void	handle_some_cases(t_token **token, char *line, t_data **data, char **env)
+void	handle_some_cases(t_token **token, char *line, t_data **data,
+		char **env)
 {
 	if ((*data)->end > (*data)->start)
 	{

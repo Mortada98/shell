@@ -204,6 +204,7 @@ int my_export(char *arg, char ***env)
 	}
 	free(name);
 	free(value);
+	set_status(0);
 	return (1);
 }
 

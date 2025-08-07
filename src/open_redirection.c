@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   open_redirection.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbouizak <mbouizak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: helfatih <helfatih@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 16:44:30 by helfatih          #+#    #+#             */
-/*   Updated: 2025/08/02 10:13:28 by mbouizak         ###   ########.fr       */
+/*   Updated: 2025/08/05 16:31:45 by helfatih         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	open_red_in(t_data **data, int *fd_in, t_command **cmd)
+void	open_red_in(int *fd_in, t_command **cmd)
 {
 	int	i;
 
-	(void)data; // Not needed anymore since we iterate directly
 	i = 0;
 	while ((*cmd)->file_input && (*cmd)->file_input[i])
 	{
@@ -44,8 +43,8 @@ void	open_red_in(t_data **data, int *fd_in, t_command **cmd)
 
 void	open_red_out(t_command **cmd, int *fd_out)
 {
-    int flags;
-    
+	int	flags;
+
 	if (is_directory(cmd))
 		exit(1);
 	flags = O_WRONLY | O_CREAT | append_or_trunc(cmd);
@@ -99,13 +98,13 @@ int	append_or_trunc(t_command **cmd)
 		return (O_TRUNC);
 }
 
-
 void	excute_redirection_of_child(t_command **cmd, t_data **data, int *fd_out,
 		int *fd_in)
 {
+	(void)data;
 	if ((*cmd)->file_input)
 	{
-		open_red_in(data, fd_in, cmd);
+		open_red_in(fd_in, cmd);
 	}
 	if ((*cmd)->file_output)
 	{

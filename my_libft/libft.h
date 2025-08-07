@@ -3,20 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbouizak <mbouizak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: helfatih <helfatih@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 15:13:35 by tchevrie          #+#    #+#             */
-/*   Updated: 2025/07/30 17:53:12 by mbouizak         ###   ########.fr       */
+/*   Updated: 2025/08/04 18:12:39 by helfatih         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-#ifndef	LONG_MAX
-#define LONG_MAX 9223372036854775807 
-#endif
-
+# include <limits.h>
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>

@@ -6,7 +6,7 @@
 /*   By: mbouizak <mbouizak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 17:19:17 by helfatih          #+#    #+#             */
-/*   Updated: 2025/08/02 10:13:28 by mbouizak         ###   ########.fr       */
+/*   Updated: 2025/08/07 14:12:43 by mbouizak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ void	open_and_duplicate(t_command **cmd, int *flags, int *fd_out)
 int	is_directory_parent(t_command **cmd)
 {
 	int	fd;
-
-	fd = open((*cmd)->file_output, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	
+	if (!(*cmd)->file_output)
+		return (0);
+	fd = open((*cmd)->file_output, O_WRONLY | O_CREAT , 0644);
 	if (fd < 0)
 	{
 		if (errno == EISDIR)
@@ -96,13 +98,7 @@ void	excute_redirection_of_parent(t_command **cmd, int *fd_out, t_data *data, in
 		close(saved_stdin);
 		close(*fd1);
 		gc_cleanup();
-		int i = 0;
-		while((*env)[i])
-		{
-			free((*env)[i]);
-			i++;
-		}
-		free(*env);
+		free_2d_array(*env);
 		rl_clear_history();
 		exit(get_status());
 	}
@@ -135,13 +131,7 @@ void	excute_redirection_of_child_builtin(t_command **cmd, int *fd_out,
 		close(*fd1);
 		close(*fd2);
 		gc_cleanup();
-		int i = 0;
-		while((*env)[i])
-		{
-			free((*env)[i]);
-			i++;
-		}
-		free(*env);
+		free_2d_array(*env);
 		rl_clear_history();
 		exit(get_status());
 	}

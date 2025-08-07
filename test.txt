@@ -1,0 +1,11 @@
+test1:
+
+	helfatih@shell | /goinfre/helfatih/minishell ➜ ./alsdkjfalksdjf
+	minishell: ./alsdkjfalksdjf: command not found
+	helfatih@shell | /goinfre/helfatih/minishell ➜ bash
+	helfatih@c1r4p4:~/goinfre/minishell$ ./alsdkjfalksdjf
+	bash: ./alsdkjfalksdjf: No such file or directory
+	helfatih@c1r4p4:~/goinfre/minishell$ 
+
+
+test2:
